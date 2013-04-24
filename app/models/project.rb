@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
   #
   # Validations
   #
-  validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
+  validates_presence_of :name, :path, :gitlab_url, :scripts, :timeout, :token, :default_ref
   validate :repo_present?
   validates_uniqueness_of :name
 

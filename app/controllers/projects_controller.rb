@@ -38,6 +38,18 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(params[:project])
 
+    if !@project.path.nil? && @project.name.present? && @project.gitlab_url.present?
+      folder = @project.name.downcase.tr(' ', '_')
+      path = "/home/gitlab_ci/projects/"
+      process = ChildProcess.build("cd #{path} && git clone #{@project.gitlab_url} #{folder}").start
+      begin
+        process.poll_for_exit(params[:timeout])
+      rescue ChildProcess::TimeoutError
+        process.stop
+      end
+      @project.path = folder + folder if process.exit_code == 0
+    end
+
     if @project.save
       redirect_to @project, notice: 'Project was successfully created.'
     else

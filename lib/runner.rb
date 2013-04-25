@@ -34,7 +34,10 @@ class Runner
   def run
     path = project.path
     commands = project.scripts
-    commands = commands.lines.to_a
+
+    gemset = project.name.downcase.tr(' ', '_')
+    commands = commands.lines.to_a.map{|line| "bash -lc 'rvm use ruby-1.9.3@#{gemset} --create && #{line}'".gsub(/\r/,"").gsub(/\n/,"")}
+
     commands.unshift(prepare_project_cmd(path, build.sha))
 
     build.run!

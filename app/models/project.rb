@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
   #
   # Validations
   #
-  validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
+  validates_presence_of :name, :path, :gitlab_url, :scripts, :timeout, :token, :default_ref
   validate :repo_present?
   validates_uniqueness_of :name
 
@@ -20,6 +20,18 @@ class Project < ActiveRecord::Base
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
+
+    if !self.path.nil? && self.name.present? && self.gitlab_url.present?
+      folder = self.name.downcase.tr(' ', '_')
+      path = "/home/gitlab_ci/projects/"
+      process = ChildProcess.build("cd #{path} && git clone #{self.gitlab_url} #{folder}").start
+      begin
+        process.poll_for_exit(self.timeout)
+        self.path = path + folder
+      rescue ChildProcess::TimeoutError
+        process.stop
+      end
+    end
   end
 
   def repo_present?

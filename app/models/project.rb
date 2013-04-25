@@ -21,10 +21,10 @@ class Project < ActiveRecord::Base
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
 
-    if !self.path.nil? && self.name.present? && self.gitlab_url.present?
+    if self.name.present? && self.gitlab_url.present?
       folder = self.name.downcase.tr(' ', '_')
       path = "/home/gitlab_ci/projects/"
-      process = ChildProcess.build("cd #{path} && git clone #{self.gitlab_url} #{folder}").start
+      process = ChildProcess.build("cd #{@project.path} && git clone #{self.gitlab_url} #{folder}").start
       begin
         process.poll_for_exit(self.timeout)
         self.path = path + folder

@@ -22,7 +22,7 @@
         %legend Git
         .field
           = f.label :path
-          = f.text_field :path, class: 'input-xlarge', placeholder: '/home/gitlab_ci/projectname'
+          = f.text_field :path, class: 'input-xlarge', placeholder: "/home/gitlab_ci/projects/ProjectName", disabled: true
         .field
           = f.label :default_ref, "Follow branches"
           = f.text_field :default_ref, class: 'input-xlarge', placeholder: 'master, stable'

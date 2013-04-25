@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
-    :default_ref, :gitlab_url, :always_build, :polling_interval
+    :default_ref, :gitlab_url, :always_build, :polling_interval, :ruby_version
 
   has_many :builds, dependent: :destroy
 

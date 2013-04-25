@@ -34,6 +34,12 @@
           = f.label :gitlab_url, "GitLab url to project"
           = f.text_field :gitlab_url, class: 'input-xlarge', placeholder: 'http://gitlab.domain.com/project-slug'
 
+      %fieldset
+        %legend Ruby
+        .field
+          = f.label :ruby_version, "Ruby version"
+          = f.text_field :ruby_version, class: 'input-xlarge', placeholder: '1.9.3-p392'
+          %small Default ruby version is '1.9.3-p392'
     .span6
 
       %fieldset

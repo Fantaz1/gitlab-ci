@@ -1,6 +1,6 @@
-app_dir = "/home/gitlab_ci/gitlab-ci/"
+app_dir = "/home/deployer/gitlab-ci"
 worker_processes 2
-working_directory app_dir
+working_directory "#{app_dir}/current"
 
 # Load app into the master before forking workers for super-fast
 # worker spawn times
@@ -13,11 +13,11 @@ timeout 30
 
 #listen 8080 # listen to port 8080 on all TCP interfaces
 #listen "127.0.0.1:8080"  # listen to port 8080 on the loopback interface
-listen "#{app_dir}/tmp/sockets/gitlab-ci.socket"
+listen "#{app_dir}/shared/sockets/gitlab-ci.socket"
 
-pid "#{app_dir}/tmp/pids/unicorn.pid"
-stderr_path "#{app_dir}/log/unicorn.stderr.log"
-stdout_path "#{app_dir}/log/unicorn.stdout.log"
+pid "#{app_dir}/shared/pids/unicorn.pid"
+stderr_path "#{app_dir}/current/log/unicorn.stderr.log"
+stdout_path "#{app_dir}/current/log/unicorn.stdout.log"
 
 # http://www.rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
 if GC.respond_to?(:copy_on_write_friendly=)

@@ -27,7 +27,7 @@ class Project < ActiveRecord::Base
       process = ChildProcess.build("cd #{self.path} && git clone #{self.gitlab_url} #{folder}").start
       begin
         process.poll_for_exit(self.timeout)
-        self.path = path + folder
+        self.path = path + folder if process.exit_code == 0
       rescue ChildProcess::TimeoutError
         process.stop
       end
@@ -35,7 +35,7 @@ class Project < ActiveRecord::Base
   end
 
   def repo_present?
-    repo
+    repo if path.present?
   rescue Grit::NoSuchPathError, Grit::InvalidGitRepositoryError
     errors.add(:path, 'Project path is not a git repository')
     false

@@ -22,12 +22,11 @@ class Project < ActiveRecord::Base
     self.token = SecureRandom.hex(15) if self.token.blank?
 
     if self.name.present? && self.gitlab_url.present?
-      folder = self.name.downcase.tr(' ', '_')
-      path = "/home/deployer/gitlab-ci/projects/"
-      process = ChildProcess.build("cd #{self.path} && git clone #{self.gitlab_url} #{folder}").start
+      path = "/home/deployer/gitlab-ci/projects/#{self.name.downcase.tr(' ', '_')}"
+      process = ChildProcess.build("sudo git clone #{self.gitlab_url} #{path}").start
       begin
         process.poll_for_exit(self.timeout)
-        self.path = path + folder if process.exit_code == 0
+        self.path = path if process.exit_code == 0
       rescue ChildProcess::TimeoutError
         process.stop
       end

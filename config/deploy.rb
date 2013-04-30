@@ -38,6 +38,12 @@ namespace :gitlabci do
 
   after "deploy:cold", "gitlabci:start"
   after "deploy:restart", "gitlabci:restart"
+
+  desc "Run whenever"
+  task :whenever do
+    run "cd #{current_path} && bundle exec whenever -w RAILS_ENV=production"
+  end
+  after "deploy:setup", "gitlabci:whenever"
 end
 
 namespace :database do

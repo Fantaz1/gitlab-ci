@@ -23,7 +23,7 @@ class Project < ActiveRecord::Base
 
     if self.name.present? && self.gitlab_url.present?
       path = "/home/deployer/gitlab-ci/projects/#{self.name.downcase.tr(' ', '_')}"
-      process = ChildProcess.build("sudo git clone #{self.gitlab_url} #{path}").start
+      process = ChildProcess.build("git clone #{self.gitlab_url} #{path}").start
       begin
         process.poll_for_exit(self.timeout)
         self.path = path if process.exit_code == 0

@@ -21,11 +21,11 @@ default_run_options[:pty] = true
 ssh_options[:paranoid] = false 
 
 set :default_environment, {
-  'PATH' => "/usr/local/rvm/gems/ruby-1.9.3-p327/bin:/usr/local/rvm/gems/ruby-1.9.3-p327@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p327/bin:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/opt/vagrant_ruby/bin",
+  'PATH' => "/home/deployer/.rvm/gems/ruby-1.9.3-p327/bin:/home/deployer/.rvm/gems/ruby-1.9.3-p327@global/bin:/home/deployer/.rvm/rubies/ruby-1.9.3-p327/bin:/home/deployer/.rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games",
   'RUBY_VERSION' => 'ruby 1.9.3-p327',
-  'GEM_HOME'     => "/usr/local/rvm/gems/ruby-1.9.3-p327",
-  'GEM_PATH'     => "/usr/local/rvm/gems/ruby-1.9.3-p327:/usr/local/rvm/gems/ruby-1.9.3-p327@global",
-  'BUNDLE_PATH'  => "/usr/local/rvm/gems/ruby-1.9.3-p327"
+  'GEM_HOME'     => "/home/deployer/.rvm/gems/ruby-1.9.3-p327",
+  'GEM_PATH'     => "/home/deployer/.rvm/gems/ruby-1.9.3-p327:/home/deployer/.rvm/gems/ruby-1.9.3-p327@global",
+  'BUNDLE_PATH'  => "/home/deployer/.rvm/gems/ruby-1.9.3-p327"
 }
 
 namespace :gitlabci do
@@ -43,7 +43,7 @@ namespace :gitlabci do
   task :whenever do
     run "cd #{current_path} && bundle exec whenever -w RAILS_ENV=production"
   end
-  after "deploy:setup", "gitlabci:whenever"
+  after "deploy", "gitlabci:whenever"
 end
 
 namespace :database do

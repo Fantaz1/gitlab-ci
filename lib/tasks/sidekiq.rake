@@ -10,6 +10,6 @@ namespace :sidekiq do
   end
 
   def pidfile
-    Rails.root.join("tmp", "pids", "sidekiq.pid")
+    '/home/deployer/gitlab_ci/shared/pids/sidekiq.pid'
   end
 end

@@ -40,7 +40,7 @@ class Runner
 
     commands = commands.lines.to_a.map{|line| "bash -lc 'rvm use #{ruby_version}@#{gemset} --create && #{line}'".gsub(/\r/,"").gsub(/\n/,"")}
 
-    [prepare_project_cmd(path, build.sha)] + commands
+    commands = [prepare_project_cmd(path, build.sha)] + commands
 
     build.run!
 
